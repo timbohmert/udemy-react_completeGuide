@@ -16,30 +16,31 @@ const App = () => {
     });
   };
 
-  const deleteChar = (charIndex) => {
-    const chars = [...userInputState.input.split('')];
+  const deleteCharHandler = (charIndex) => {
+    const chars = userInputState.input.split('');
     chars.splice(charIndex, 1);
-    setUserInputState({ input: chars.join(''), inputLen: chars.join('').length });
+    setUserInputState({
+      input: chars.join(''),
+      inputLen: chars.join('').length
+    });
   };
 
-  let chars = null;
+  let charList = null;
 
   if (userInputState.inputLen >= 5) {
-    chars = (
-      <div>
-        {userInputState.input.split('').map((char, index) => {
-          return <Char char={char} click={() => deleteChar(index)} />;
-        })}
-      </div>
-    );
+    charList = userInputState.input.split('').map((char, index) => {
+      return (
+        <Char char={char} key={index} click={() => deleteCharHandler(index)} />
+      );
+    });
   }
 
   return (
     <div className="App">
-      <input type="text" onChange={(event) => inputs(event)} />
+      <input type="text" onChange={inputs} />
       <p>{userInputState.inputLen}</p>
       <Validation length={userInputState.inputLen} />
-      {chars}
+      {charList}
     </div>
   );
 };
