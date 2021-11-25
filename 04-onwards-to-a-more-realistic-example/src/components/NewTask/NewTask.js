@@ -1,9 +1,29 @@
 import { useState } from 'react';
+import useHTTP from '../../hooks/use-http';
 
 import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
 const NewTask = (props) => {
+  // const applyData = (data) => {
+  //   const generatedId = data.name; // firebase-specific => "name" contains generated id
+  //   const createdTask = {
+  //     id: generatedId,
+  //     text:
+  //   };
+
+  //   props.onAddTask(createdTask);
+  // };
+
+  // const httpResponse = useHTTP(
+  //   {
+  //     url: 'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json',
+  //     method: 'POST',
+  //     body: taskText,
+  //     headers: { 'Content-Type': 'application/json' }
+  //   },
+  //   applyData
+  // );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,13 +32,13 @@ const NewTask = (props) => {
     setError(null);
     try {
       const response = await fetch(
-        'https://react-http-6b4a6.firebaseio.com/tasks.json',
+        'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json',
         {
           method: 'POST',
           body: JSON.stringify({ text: taskText }),
           headers: {
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         }
       );
 
@@ -29,7 +49,10 @@ const NewTask = (props) => {
       const data = await response.json();
 
       const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = { id: generatedId, text: taskText };
+      const createdTask = {
+        id: generatedId,
+        text: taskText
+      };
 
       props.onAddTask(createdTask);
     } catch (err) {
@@ -40,7 +63,10 @@ const NewTask = (props) => {
 
   return (
     <Section>
-      <TaskForm onEnterTask={enterTaskHandler} loading={isLoading} />
+      <TaskForm
+        onEnterTask={enterTaskHandler}
+        loading={isLoading}
+      />
       {error && <p>{error}</p>}
     </Section>
   );
