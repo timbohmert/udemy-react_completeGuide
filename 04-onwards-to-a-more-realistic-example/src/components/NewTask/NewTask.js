@@ -5,60 +5,31 @@ import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
 const NewTask = (props) => {
-  // const applyData = (data) => {
-  //   const generatedId = data.name; // firebase-specific => "name" contains generated id
-  //   const createdTask = {
-  //     id: generatedId,
-  //     text:
-  //   };
+  const {
+    isLoading,
+    error,
+    sendRequest: sendTaskRequest
+  } = useHTTP();
 
-  //   props.onAddTask(createdTask);
-  // };
+  const newTaskData = (taskText, taskData) => {
+    const generatedId = taskData.name; // firebase-specific => "name" contains generated id
+    const createdTask = {
+      id: generatedId,
+      text: taskText
+    };
 
-  // const httpResponse = useHTTP(
-  //   {
-  //     url: 'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json',
-  //     method: 'POST',
-  //     body: taskText,
-  //     headers: { 'Content-Type': 'application/json' }
-  //   },
-  //   applyData
-  // );
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const enterTaskHandler = async (taskText) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json',
-        {
-          method: 'POST',
-          body: JSON.stringify({ text: taskText }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Request failed!');
-      }
-
-      const data = await response.json();
-
-      const generatedId = data.name; // firebase-specific => "name" contains generated id
-      const createdTask = {
-        id: generatedId,
-        text: taskText
-      };
-
-      props.onAddTask(createdTask);
-    } catch (err) {
-      setError(err.message || 'Something went wrong!');
-    }
-    setIsLoading(false);
+    props.onAddTask(createdTask);
+  };
+  const enterTaskHandler = (taskText) => {
+    sendTaskRequest(
+      {
+        url: 'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json',
+        method: 'POST',
+        body: taskText,
+        headers: { 'Content-Type': 'application/json' }
+      },
+      newTaskData.bind(null, taskText)
+    );
   };
 
   return (

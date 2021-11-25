@@ -9,33 +9,33 @@ function App() {
   // const [error, setError] = useState(null);
   const [tasks, setTasks] = useState([]);
 
-  const transformTasks = (taskObj) => {
-    const loadedTasks = [];
-
-    for (const taskKey in taskObj) {
-      loadedTasks.push({
-        id: taskKey,
-        text: taskObj[taskKey].text
-      });
-    }
-
-    setTasks(loadedTasks);
-  };
-
   const {
     isLoading,
     error,
     sendRequest: fetchTasks
-  } = useHTTP(
-    {
-      url: 'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json'
-    },
-    transformTasks
-  );
+  } = useHTTP();
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    const transformTasks = (taskObj) => {
+      const loadedTasks = [];
+
+      for (const taskKey in taskObj) {
+        loadedTasks.push({
+          id: taskKey,
+          text: taskObj[taskKey].text
+        });
+      }
+
+      setTasks(loadedTasks);
+    };
+
+    fetchTasks(
+      {
+        url: 'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/tasks.json'
+      },
+      transformTasks
+    );
+  }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
