@@ -8,21 +8,29 @@
 
 //created enteredNameTouch state to capture if that input has had interaction, and this allows for enteredNameIsValid state to start as false, which is more correct. Then change the enteredNameTouch state with submission of the form
 
-import { useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const SimpleInput = (props) => {
-  const nameInputRef = useRef();
-
   const [enteredName, setEnteredName] = useState('');
-
-  const [enteredNameIsValid, setEnteredNameIsValid] =
-    useState(false);
 
   const [enteredNameTouch, setEnteredNameTouch] =
     useState(false);
 
+  const enteredNameIsValid = enteredName.trim() !== '';
+  const nameInputIsInvalid =
+    !enteredNameIsValid && enteredNameTouch;
+
+  let formIsValid = false;
+
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
+
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+  };
+
+  const nameInputBlurHandler = (event) => {
     setEnteredNameTouch(true);
   };
 
@@ -31,25 +39,15 @@ const SimpleInput = (props) => {
 
     setEnteredNameTouch(true);
 
-    if (enteredName.trim() === '') {
-      setEnteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setEnteredNameIsValid(true);
-
     console.log(enteredName);
-    const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue);
 
     setEnteredName('');
-
-    //below is not ideal cause the code manipulates the dom and that is no bueno
-    // nameInput.current.value = ''
+    setEnteredNameTouch(false);
   };
-
-  const nameInputIsInvalid =
-    !enteredNameIsValid && enteredNameTouch;
 
   const nameInputClasses = nameInputIsInvalid
     ? 'form-control invalid'
@@ -60,10 +58,10 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameInputRef}
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid && (
@@ -73,7 +71,7 @@ const SimpleInput = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
