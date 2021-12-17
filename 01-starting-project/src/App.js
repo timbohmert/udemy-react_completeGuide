@@ -22,7 +22,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'https://react-http-6e14b-default-rtdb.firebaseio.com/movies.json'
+        'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/movies.json'
       );
       if (!response.ok) {
         throw new Error('Something went wrong here!');
@@ -55,7 +55,7 @@ function App() {
 
   const addMovieHandler = async (movie) => {
     const response = await fetch(
-      'https://react-http-6e14b-default-rtdb.firebaseio.com/movies.json',
+      'https://custom-hooks-76ab1-default-rtdb.firebaseio.com/movies.json',
       {
         method: 'POST',
         body: JSON.stringify(movie),
