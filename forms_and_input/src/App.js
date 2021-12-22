@@ -8,11 +8,13 @@
 //keystroke: warns user before had a chance of entering valid values, if applied on invalid inputs it can provide more direct feedback
 
 import SimpleInput from './components/SimpleInput';
+import BasicForm from './components/BasicForm';
 
 function App() {
   return (
     <div className="app">
       <SimpleInput />
+      <BasicForm />
     </div>
   );
 }
