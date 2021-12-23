@@ -13,7 +13,7 @@ const BasicForm = (props) => {
 
   //First Name
   const {
-    enteredValue: enteredFirstName,
+    value: enteredFirstName,
     enteredValueIsValid: firstNameIsValid,
     inputIsInvalid: firstNameError,
     valueInputChangeHandler: firstNameChangeHandler,
@@ -23,7 +23,7 @@ const BasicForm = (props) => {
 
   //Last Name
   const {
-    enteredValue: enteredLastName,
+    value: enteredLastName,
     enteredValueIsValid: lastNameIsValid,
     inputIsInvalid: lastNameError,
     valueInputChangeHandler: lastNameChangeHandler,
@@ -33,7 +33,7 @@ const BasicForm = (props) => {
 
   //email Name
   const {
-    enteredValue: enteredEmail,
+    value: enteredEmail,
     enteredValueIsValid: emailIsValid,
     inputIsInvalid: emailError,
     valueInputChangeHandler: emailChangeHandler,
@@ -52,17 +52,15 @@ const BasicForm = (props) => {
   const formSubmissionHandler = (event) => {
     event.preventDefault();
 
-    if (
-      !firstNameIsValid ||
-      !lastNameIsValid ||
-      !emailIsValid
-    ) {
+    if (!formIsValid) {
       return;
     }
 
-    console.log(enteredFirstName);
-    console.log(enteredLastName);
-    console.log(enteredEmail);
+    console.log(
+      enteredFirstName,
+      enteredLastName,
+      enteredEmail
+    );
 
     firstNameReset();
     lastNameReset();
@@ -89,11 +87,14 @@ const BasicForm = (props) => {
           <input
             type="text"
             id="name"
+            value={enteredFirstName}
             onChange={firstNameChangeHandler}
             onBlur={firstNameBlurHandler}
           />
           {firstNameError && (
-            <p>Please enter a first name.</p>
+            <p className="error-text">
+              Please enter a first name.
+            </p>
           )}
         </div>
         <div className={lastInputClasses}>
@@ -101,11 +102,14 @@ const BasicForm = (props) => {
           <input
             type="text"
             id="name"
+            value={enteredLastName}
             onChange={lastNameChangeHandler}
             onBlur={lastNameBlurHandler}
           />
           {lastNameError && (
-            <p>Please enter a last name.</p>
+            <p className="error-text">
+              Please enter a last name.
+            </p>
           )}
         </div>
       </div>
@@ -114,10 +118,15 @@ const BasicForm = (props) => {
         <input
           type="text"
           id="name"
+          value={enteredEmail}
           onChange={emailChangeHandler}
           onBlur={emailBlurHandler}
         />
-        {emailError && <p>Please enter a valid email.</p>}
+        {emailError && (
+          <p className="error-text">
+            Please enter a valid email.
+          </p>
+        )}
       </div>
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>

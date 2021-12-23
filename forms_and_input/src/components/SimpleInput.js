@@ -23,7 +23,7 @@ const SimpleInput = (props) => {
   };
 
   const {
-    enteredValue: enteredName,
+    value: enteredName,
     enteredValueIsValid: enteredNameIsValid,
     inputIsInvalid: nameInputIsInvalid,
     valueInputChangeHandler: nameInputChangeHandler,
@@ -32,7 +32,7 @@ const SimpleInput = (props) => {
   } = useInput(nameValidator);
 
   const {
-    enteredValue: enteredEmail,
+    value: enteredEmail,
     enteredValueIsValid: enteredEmailIsValid,
     inputIsInvalid: emailInputIsInvalid,
     valueInputChangeHandler: emailInputChangeHandler,
